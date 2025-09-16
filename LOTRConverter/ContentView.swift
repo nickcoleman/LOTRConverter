@@ -8,15 +8,98 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var showExchangeInfo = false
+    @State var leftCurrencyAmount = ""
+    @State var rightCurrencyAmount = ""
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        ZStack {
+            Image(.background)
+                .resizable()
+                .ignoresSafeArea()
+            
+            VStack {
+                Image(.prancingpony)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 200)
+                
+                Text("Currency Exchange")
+                    .font(.largeTitle)
+                    .foregroundStyle(.white)
+                
+                HStack {
+                    // Currency
+                    VStack {
+                        HStack {
+                            Image(.silverpiece)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 33)
+                            
+                            // Currency Text: "Silver Piece"
+                            Text("Silver Piece")
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                            
+                        } // End HStack: Silver Currency Info
+                        .padding(.bottom, -5)
+                        
+                        TextField("Amount", text: $leftCurrencyAmount)
+                            .keyboardType(.decimalPad)
+                            .textFieldStyle(.roundedBorder)
+                    } // End VStack: Left Currency Section
+                    
+                    
+                    Image(systemName: "equal")
+                        .font(.largeTitle)
+                        .foregroundStyle(.white)
+                        .symbolEffect(.pulse)
+                    
+                    VStack {
+                        HStack {
+                            Text("Gold Piece")
+                                .font(.headline)
+                                .foregroundStyle(.white)
+                            
+                            Image(.goldpiece)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: 33)
+                            
+                        } // End HStack: Gold Currency Info
+                        .padding(.bottom, -5)
+                        
+                        TextField("Amount", text: $rightCurrencyAmount)
+                            .keyboardType(.decimalPad)
+                            .textFieldStyle(.roundedBorder)
+                            .multilineTextAlignment(.trailing)
+                        
+                    } // End VStack: Right Currency Conversion Section
+                } // End HStack: Currency Conversion Section
+                .padding()
+                .background(.black.opacity(0.5))
+                .clipShape(.capsule)
+                
+                Spacer()
+                
+                HStack {
+                    Spacer()
+                    Button {
+                        showExchangeInfo.toggle()
+                        print("showExchange Value \(showExchangeInfo)" )
+                    } label: {
+                        Image(systemName: "info.circle.fill")
+                            .font(.largeTitle)
+                            .foregroundStyle(.white)
+                    }
+                    .padding(.trailing, 20)                } // End HStack: Info Button
+            } // End Main VStack
+        } // End ZStack
+        .sheet(isPresented: $showExchangeInfo) {
+            ExchangeInfo()
         }
-        .padding()
-    }
+    } // End Body
 }
 
 #Preview {
