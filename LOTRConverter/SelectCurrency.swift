@@ -7,9 +7,13 @@
 
 import SwiftUI
 
+
 struct SelectCurrency: View {
     @Environment(\.dismiss) var dismiss
-    let rows = [GridItem(.flexible()), GridItem(.flexible())]
+    let columns = [GridItem(), GridItem(), GridItem()]
+    
+    @Binding var topCurrency: Currency
+    @Binding var bottomCurrency: Currency
     
     var body: some View {
         ZStack {
@@ -17,34 +21,36 @@ struct SelectCurrency: View {
                 .resizable()
                 .ignoresSafeArea()
                 .background(.brown)
+            
             VStack {
                 Text("Select the currency you are starting with:")
                     .fontWeight(.bold)
-                    .padding(.top, 40)
+                    .padding(.top)
                 
-                LazyHGrid(rows: rows) {
-                    CurrencyIcon(currencyImage: .copperpenny, currencyName: "Copper Penny")
-                    CurrencyIcon(currencyImage: .silverpenny, currencyName: "Silver Penny")
-                    CurrencyIcon(currencyImage: .silverpiece, currencyName: "Silver Piece")
-                    CurrencyIcon(currencyImage: .goldpenny, currencyName: "Gold Penny")
-                    CurrencyIcon(currencyImage: .goldpiece, currencyName: "Gold Piece")
-                }
+                IconGrid(currency: $topCurrency)
+                
                 
                 Text("Select the currency you would like to convert to:")
                     .fontWeight(.bold)
+                    .padding(.top)
                 
-                HStack {
-                    // Coin Option
-                }
+                IconGrid(currency: $bottomCurrency)
+                
                 Spacer()
                 DismissButton()
             }
             .padding()
             .multilineTextAlignment(.center)
+            .foregroundStyle(.black)
         }
     }
 }
 
 #Preview {
-    SelectCurrency( )
+    @Previewable @State var topCurrency: Currency = .silverPiece
+    @Previewable @State var bottomCurrency: Currency = .goldPiece
+    SelectCurrency(
+        topCurrency: $topCurrency,
+        bottomCurrency: $bottomCurrency
+    )
 }

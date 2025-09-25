@@ -9,8 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     @State var showExchangeInfo = false
+    @State var showCurrencySelection = false
+    
     @State var leftCurrencyAmount = ""
     @State var rightCurrencyAmount = ""
+    
+    @State var leftCurrency = Currency.silverPiece
+    @State var rightCurrency: Currency = .goldPiece
     
     var body: some View {
         ZStack {
@@ -32,13 +37,13 @@ struct ContentView: View {
                     // Currency
                     VStack {
                         HStack {
-                            Image(.silverpiece)
+                            Image(leftCurrency.image)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 33)
                             
                             // Currency Text: "Silver Piece"
-                            Text("Silver Piece")
+                            Text(leftCurrency.name)
                                 .font(.headline)
                                 .foregroundStyle(.white)
                             
@@ -49,6 +54,9 @@ struct ContentView: View {
                             .keyboardType(.decimalPad)
                             .textFieldStyle(.roundedBorder)
                     } // End VStack: Left Currency Section
+                    .onTapGesture {
+                        showCurrencySelection.toggle()
+                    }
                     
                     
                     Image(systemName: "equal")
@@ -58,17 +66,20 @@ struct ContentView: View {
                     
                     VStack {
                         HStack {
-                            Text("Gold Piece")
+                            Text(rightCurrency.name)
                                 .font(.headline)
                                 .foregroundStyle(.white)
                             
-                            Image(.goldpiece)
+                            Image(rightCurrency.image)
                                 .resizable()
                                 .scaledToFit()
                                 .frame(height: 33)
                             
                         } // End HStack: Gold Currency Info
                         .padding(.bottom, -5)
+                        .onTapGesture {
+                            showCurrencySelection.toggle()
+                        }
                         
                         TextField("Amount", text: $rightCurrencyAmount)
                             .keyboardType(.decimalPad)
@@ -98,6 +109,12 @@ struct ContentView: View {
         } // End ZStack
         .sheet(isPresented: $showExchangeInfo) {
             ExchangeInfo()
+        }
+        .sheet(isPresented: $showCurrencySelection) {
+            SelectCurrency(
+                topCurrency: $leftCurrency,
+                bottomCurrency: $rightCurrency
+            )
         }
     } // End Body
 }
