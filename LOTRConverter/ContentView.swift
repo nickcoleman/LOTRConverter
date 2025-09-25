@@ -111,12 +111,16 @@ struct ContentView: View {
             ExchangeInfo()
         }
         .sheet(isPresented: $showCurrencySelection) {
+            // leftCurrency and rightCurrency are passed as bindings
+            //   by having the $ prefix
+            // In SelectCurrency, topCurrency and bottomCurrency
+            //   are declared as @Binding
             SelectCurrency(
                 topCurrency: $leftCurrency,
                 bottomCurrency: $rightCurrency
             )
         }
-    } // End Body
+    }
 }
 
 #Preview {
